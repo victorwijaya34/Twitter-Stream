@@ -1,0 +1,19 @@
+df = sqlContext\
+.readStream\
+.format("kafka")\
+.option("kafka.bootstrap.servers", "localhost:9092")\
+.option("subscribe", "aouar")\
+.option("startingOffsets", "earliest")\
+.option("failOnDataLoss", "false")\
+.load()\
+.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)", "timestamp as timestamp")\
+.writeStream\
+.format("json")\
+.outputMode("append")\
+.option("checkpointLocation", "/home/pi/Kafka-Test/checkpoint")\
+.option("path", "/home/pi/Kafka-Test/Data")\
+.start()\
+.awaitTermination()
+
+
+
